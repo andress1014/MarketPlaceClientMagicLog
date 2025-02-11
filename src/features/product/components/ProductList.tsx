@@ -15,7 +15,6 @@ interface Product {
 }
 
 const ProductList = ({ sellerOnly }: { sellerOnly?: boolean }) => {
-  const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -32,8 +31,7 @@ const ProductList = ({ sellerOnly }: { sellerOnly?: boolean }) => {
         ? await productService.getSellerProducts(token)
         : await productService.getCustomerProducts(token || "");
 
-      setProducts(data);
-      setFilteredProducts(data);
+      setFilteredProducts(data); // Directly set filteredProducts
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to fetch products");
     } finally {
@@ -54,14 +52,13 @@ const ProductList = ({ sellerOnly }: { sellerOnly?: boolean }) => {
 
     try {
       await productService.deleteProduct(token, productId);
-      fetchProducts();
+      fetchProducts(); // Refresh the product list after deletion
     } catch (error) {
       console.error("Error deleting product:", error);
       alert("Failed to delete product.");
     }
   };
 
-  // ✅ Función mejorada para controlar el stock antes de agregar al carrito
   const handleAddToCart = (product: Product) => {
     const existingItem = cart.find((item) => item.id === product.id);
     const currentQuantity = existingItem ? existingItem.quantity : 0;
@@ -74,11 +71,18 @@ const ProductList = ({ sellerOnly }: { sellerOnly?: boolean }) => {
     addToCart(product);
   };
 
-  // ✅ Función para abrir el modal de edición con verificación
   const handleEditProduct = (product: Product) => {
     console.log("Selected product for editing:", product);
     setSelectedProduct(product);
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <div className="container-fluid">
@@ -141,7 +145,6 @@ const ProductList = ({ sellerOnly }: { sellerOnly?: boolean }) => {
         </table>
       </div>
 
-      {/* ✅ Asegurar que el modal se muestra correctamente */}
       <EditProductModal
         product={selectedProduct}
         handleClose={() => setSelectedProduct(null)}

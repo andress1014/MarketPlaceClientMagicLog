@@ -1,7 +1,5 @@
 import { Modal } from "react-bootstrap";
 import LoginForm from "../features/auth/components/LoginForm";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faX } from '@fortawesome/free-solid-svg-icons';
 
 interface LoginModalProps {
   show: boolean;

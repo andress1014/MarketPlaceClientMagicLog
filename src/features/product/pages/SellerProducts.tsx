@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { productService } from "../services/productService";
 import { useAuthStore } from "../../auth/store/authStore";
-import { Alert } from "react-bootstrap";
 import EditProductModal from "../components/EditProductModal";
-import AddProductModal from "../components/AddProductModal"; // Importa el nuevo modal
+import AddProductModal from "../components/AddProductModal";
 
 interface Product {
   id: number;
@@ -21,7 +20,7 @@ const SellerProducts = () => {
   const { isAuthenticated } = useAuthStore();
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [showAddProductModal, setShowAddProductModal] = useState<boolean>(false); // Estado para controlar el modal de agregar producto
+  const [showAddProductModal, setShowAddProductModal] = useState<boolean>(false);
 
   const fetchSellerProducts = async () => {
     setLoading(true);
@@ -36,8 +35,8 @@ const SellerProducts = () => {
     } catch (err) {
       console.error("Error fetching products:", err);
       setError(
-        err instanceof Error 
-          ? `Error al cargar productos: ${err.message}` 
+        err instanceof Error
+          ? `Error al cargar productos: ${err.message}`
           : "Error al cargar los productos del vendedor"
       );
     } finally {
@@ -51,11 +50,11 @@ const SellerProducts = () => {
   };
 
   const handleDelete = async (productId: number) => {
-    if (window.confirm('Are you sure you want to delete this product?')) {
+    if (window.confirm("Are you sure you want to delete this product?")) {
       try {
         const token = localStorage.getItem("token");
         if (!token) throw new Error("No token found");
-        
+
         await productService.deleteProduct(token, productId);
         await fetchSellerProducts(); // Recargar la lista después de eliminar
       } catch (err) {
@@ -69,6 +68,16 @@ const SellerProducts = () => {
       fetchSellerProducts();
     }
   }, [isAuthenticated]);
+
+  // Show loading state
+  if (loading) {
+    return <div className="text-center p-4">Loading...</div>;
+  }
+
+  // Show error state
+  if (error) {
+    return <div className="text-center p-4 text-danger">Error: {error}</div>;
+  }
 
   return (
     <div className="p-6 bg-white shadow-md rounded-lg">
@@ -107,13 +116,13 @@ const SellerProducts = () => {
                   <td>${product.price.toFixed(2)}</td>
                   <td>
                     <div className="d-flex gap-2 justify-content-center">
-                      <button 
+                      <button
                         className="btn btn-warning btn-sm"
                         onClick={() => handleEdit(product)}
                       >
                         Edit
                       </button>
-                      <button 
+                      <button
                         className="btn btn-danger btn-sm"
                         onClick={() => handleDelete(product.id)}
                       >

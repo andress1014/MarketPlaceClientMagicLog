@@ -1,7 +1,7 @@
 import { Modal, Button } from "react-bootstrap";
 import { useCart } from "../context/CartContext";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faX, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 interface CartModalProps {
   show: boolean;

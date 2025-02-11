@@ -1,43 +1,55 @@
 import { useState } from "react";
-import { authService } from "../services/authService";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
 
+// ✅ Definimos correctamente la interfaz de props
 interface RegisterFormProps {
-  handleClose: () => void;
+  onSubmit: (data: {
+    username: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+    roleType: string;
+  }) => Promise<void>;
 }
 
-const RegisterForm: React.FC<RegisterFormProps> = ({ handleClose }) => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState(""); 
+const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit }) => {
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    roleType: "customer",
+  });
+
   const [errors, setErrors] = useState<{ username?: string; email?: string; password?: string; confirmPassword?: string; apiError?: string }>({});
 
   const validate = () => {
     const newErrors: { username?: string; email?: string; password?: string; confirmPassword?: string } = {};
-    if (!username) newErrors.username = "Username is required";
-    if (!email) newErrors.email = "Email is required";
-    if (!password || password.length < 6) newErrors.password = "Password must be at least 6 characters";
-    if (password !== confirmPassword) newErrors.confirmPassword = "Passwords do not match"; 
+    if (!formData.username) newErrors.username = "Username is required";
+    if (!formData.email) newErrors.email = "Email is required";
+    if (!formData.password || formData.password.length < 6) newErrors.password = "Password must be at least 6 characters";
+    if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = "Passwords do not match"; 
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validate()) {
       try {
-        await authService.register(username, email, password, "customer");
-        handleClose(); // ✅ Cierra el modal después del registro exitoso
+        await onSubmit(formData);
       } catch (error: any) {
-        // ✅ Verificar si el error es una respuesta HTTP válida
         if (error instanceof Response) {
           const errorData = await error.json();
           setErrors({ apiError: errorData.message || "Registration failed" });
         } else {
-          console.log(error)
+          console.log(error);
           setErrors({ apiError: "An unexpected error occurred" });
         }
       }
@@ -57,8 +69,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ handleClose }) => {
           placeholder="Enter your Username"
           className="input" 
           type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          name="username"
+          value={formData.username}
+          onChange={handleChange}
           required 
         />
       </div>
@@ -73,8 +86,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ handleClose }) => {
           placeholder="Enter your Email"
           className="input" 
           type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
           required 
         />
       </div>
@@ -89,8 +103,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ handleClose }) => {
           placeholder="Enter your Password"
           className="input" 
           type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
           required 
         />
       </div>
@@ -105,8 +120,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ handleClose }) => {
           placeholder="Confirm your Password"
           className="input" 
           type="password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
+          name="confirmPassword"
+          value={formData.confirmPassword}
+          onChange={handleChange}
           required 
         />
       </div>
@@ -118,6 +134,5 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ handleClose }) => {
     </form>
   );
 };
-
 
 export default RegisterForm;

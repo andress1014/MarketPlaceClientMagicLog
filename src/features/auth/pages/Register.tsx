@@ -16,6 +16,7 @@ const RegisterUser = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      {/* ✅ Ahora RegisterForm recibe correctamente onSubmit */}
       <RegisterForm onSubmit={handleRegister} />
     </div>
   );

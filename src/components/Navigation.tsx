@@ -6,15 +6,13 @@ import RegisterModal from "./RegisterModal";
 import CartModal from "../components/CartModal"; // Modal del carrito
 import { useCart } from "../context/CartContext";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCartShopping, faUser, faFilePen, faRightFromBracket, faPlus } from '@fortawesome/free-solid-svg-icons';
-import AddProductModal from "../features/product/components/AddProductModal";
+import { faCartShopping, faUser, faFilePen, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 
 const Navigation = () => {
   const { isAuthenticated, logout, roleType } = useAuthStore();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [isProductModalOpen, setIsProductModalOpen] = useState(false);
   const { cart } = useCart();
 
   const handleLogout = () => {

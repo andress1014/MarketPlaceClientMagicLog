@@ -1,4 +1,3 @@
-import { useState } from "react";
 import ProductForm from "./ProductForm"; // Importa el formulario de producto
 
 interface AddProductModalProps {
