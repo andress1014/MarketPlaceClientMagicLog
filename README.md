@@ -3,7 +3,7 @@
 Abre una terminal y ejecuta:
 
 ```sh
-git clone <URL_DEL_REPOSITORIO>
+git clone https://github.com/andress1014/MarketPlaceClientMagicLog.git
 cd MarketPlaceClientMagicLog
 ```
 
