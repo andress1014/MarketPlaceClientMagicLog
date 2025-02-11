@@ -1,50 +1,65 @@
-# React + TypeScript + Vite
+🔹 1. Clonar el Repositorio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Abre una terminal y ejecuta:
 
-Currently, two official plugins are available:
+git clone https://github.com/andress1014/MarketPlaceClientMagicLog.git
+cd MarketPlaceClientMagicLog
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+🔹 2. Instalar Dependencias
 
-## Expanding the ESLint configuration
+Asegúrate de tener Node.js 16+ instalado y ejecuta:
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+npm install
 
-- Configure the top-level `parserOptions` property like this:
+🔹 3. Configurar Variables de Entorno
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+Crea un archivo .env en la raíz del proyecto y agrega:
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+VITE_API_URL=https://marketplaceservermagiclog-production.up.railway.app
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+Esto configurará la URL del backend.
+🔹 4. Levantar el Servidor
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+Ejecuta:
+
+npm run dev
+
+Esto iniciará Vite y verás algo como:
+
+  VITE vX.X.X  ready in XX ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+
+Abre http://localhost:5173/ en tu navegador.
+🔹 5. Acceder con Usuarios de Prueba
+Rol	Correo	Contraseña
+Admin	admin@admin.com	123456
+Seller 1	seller@seller.com	123456
+Seller 2	seller2@gmail.com	123456
+🔹 6. Solución de Problemas
+
+Si tienes errores, prueba:
+
+    Verificar versión de Node.js
+
+node -v
+
+Se recomienda Node.js 16 o superior.
+
+Borrar y reinstalar dependencias
+
+rm -rf node_modules package-lock.json
+npm install
+
+Si hay problemas con Vite, asegúrate de que está instalado
+
+npm list vite
+
+Si no está, instálalo con:
+
+    npm install vite
+
+🚀 Listo para Desarrollo
+
+Con estos pasos, tu entorno estará listo para trabajar con React + TypeScript + Vite. 🎉 ¡Déjame saber si necesitas ayuda! 🚀
